@@ -4,8 +4,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index",
-    "build": "tsc -p .",
-    "dev": "tsc-watch --onSuccess \"yarn start\""
+    "build": "prisma generate && rimraf dist && tsc",
+    "add-build": "git add dist",
+    "ts.check": "tsc --project tsconfig.json",
+    "dev": "tsc-watch --onSuccess \"yarn start\"",
+    "postinstall": "prisma generate"
   },
   "license": "MIT",
   "dependencies": {
@@ -18,8 +21,15 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^22.5.5",
+    "pre-commit": "^1.2.2",
     "prisma": "^5.19.1",
+    "rimraf": "^6.0.1",
     "tsc-watch": "^6.2.0",
     "typescript": "^5.6.2"
-  }
+  },
+  "pre-commit": [
+      "ts.check",
+      "build",
+      "add-build"
+  ]
 }
